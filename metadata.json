@@ -1,0 +1,9 @@
+
+{
+  "name": "GEMBIRA AI - Gerakan Mahasiswa Bicara AI",
+  "description": "An educational platform designed for university students to master AI literacy, foster self-actualization, and build critical thinking through AI-guided project management and ethical reasoning.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
