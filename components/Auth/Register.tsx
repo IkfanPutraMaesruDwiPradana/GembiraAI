@@ -28,11 +28,11 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onNavigateLogin 
 
     try {
       const result = await registerUser(
-        formData.email, // using email field for username
+        formData.email.trim(), // using email field for username
         formData.password,
-        formData.name,
-        formData.university,
-        formData.major
+        formData.name.trim(),
+        formData.university.trim(),
+        formData.major.trim()
       );
 
       if (result.success && result.user) {

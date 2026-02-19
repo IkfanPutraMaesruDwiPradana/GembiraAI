@@ -20,7 +20,9 @@ export const registerUser = async (
 ): Promise<AuthResponse> => {
     try {
         // Supabase requires email, so we construct a fake email from username
-        const email = `${username}@gembira.ai`;
+        // Optimize: Sanitize username to ensure valid email format
+        const cleanUsername = username.trim().toLowerCase().replace(/\s+/g, '');
+        const email = `${cleanUsername}@gembira.ai`;
 
         const { data, error } = await supabase.auth.signUp({
             email,

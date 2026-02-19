@@ -1,5 +1,5 @@
 
--- GEMBIRA AI - Database Triggers
+-- GEMBIRA AI - Database Triggers (FIXED v2)
 -- Run this in Supabase SQL Editor to enable automatic profile creation
 
 -- 1. Create function to handle new user signup
@@ -10,10 +10,10 @@ BEGIN
   VALUES (
     new.id,
     new.email,
-    new.raw_user_meta_data->>'name',
-    new.raw_user_meta_data->>'university',
-    new.raw_user_meta_data->>'major',
-    new.raw_user_meta_data->>'avatar_color'
+    COALESCE(new.raw_user_meta_data->>'name', 'User'),
+    COALESCE(new.raw_user_meta_data->>'university', ''),
+    COALESCE(new.raw_user_meta_data->>'major', ''),
+    COALESCE(new.raw_user_meta_data->>'avatar_color', '#3B82F6')
   );
   
   -- Assign initial badge 'Newbie'
@@ -25,16 +25,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- 2. Create the trigger
+-- 2. Create trigger (safe: drops if exists first)
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
-
--- 3. Seed initial badges if they don't exist (Safety check)
-INSERT INTO public.badges (name, description, icon, requirement_type, requirement_value)
-VALUES 
-  ('Newbie', 'Baru bergabung di Gembira AI', '🌱', 'system', 0),
-  ('Explorer', 'Menyelesaikan 1 topik', '🧭', 'literacy_count', 1),
-  ('Scholar', 'Mencapai Level 5', '🎓', 'level', 5)
-ON CONFLICT (name) DO NOTHING;
