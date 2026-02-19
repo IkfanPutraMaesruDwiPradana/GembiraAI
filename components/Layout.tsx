@@ -19,7 +19,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeView, setActiveV
   const levelProgress = (user.xp % 100);
 
   return (
-    <div className="flex h-screen overflow-hidden text-slate-800">
+    <div className="flex h-screen overflow-x-hidden text-slate-800">
       {/* Light Futuristic Sidebar */}
       <motion.aside
         initial={{ x: -100, opacity: 0 }}

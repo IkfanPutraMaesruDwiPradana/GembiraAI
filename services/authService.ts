@@ -104,7 +104,8 @@ export const loginUser = async (
     password: string
 ): Promise<AuthResponse> => {
     try {
-        const email = `${username}@gembira.ai`;
+        const cleanUsername = username.trim().toLowerCase().replace(/\s+/g, '');
+        const email = `${cleanUsername}@gembira.ai`;
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
