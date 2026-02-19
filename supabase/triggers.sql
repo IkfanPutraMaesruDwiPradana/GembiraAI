@@ -6,15 +6,14 @@
 CREATE OR REPLACE FUNCTION public.handle_new_user() 
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.users (id, email, name, university, major, avatar_color, role)
+  INSERT INTO public.users (id, email, name, university, major, avatar_color)
   VALUES (
     new.id,
     new.email,
     new.raw_user_meta_data->>'name',
     new.raw_user_meta_data->>'university',
     new.raw_user_meta_data->>'major',
-    new.raw_user_meta_data->>'avatar_color',
-    COALESCE(new.raw_user_meta_data->>'role', 'student') 
+    new.raw_user_meta_data->>'avatar_color'
   );
   
   -- Assign initial badge 'Newbie'
